@@ -8,6 +8,8 @@
 ### Installation
 
     npm i binance-api-new
+    
+    import Binance from 'binance-api-new'
 
 ### Getting started
 
@@ -16,7 +18,8 @@ you don't plan on doing authenticated calls. You can create an api key
 [here](https://www.binance.com/userCenter/createApi.html).
 
 ```js
-import Binance from 'binance-api-node'
+// import Binance from 'binance-api-node'
+import Binance from 'binance-api-new'
 
 const client = Binance()
 
