@@ -762,8 +762,8 @@ test('[FUTURES-REST] dailyStats', async t => {
   checkFields(t, res, ['highPrice', 'lowPrice', 'volume', 'priceChange'])
 })
 
-test('[FUTURES-REST] prices', async t => {
-  const prices = await client.futuresPrices()
+test.only('[FUTURES-REST] prices', async t => {
+  const prices = await client.futuresPrices({ symbol: 'BTCUSDT' })
   t.truthy(prices)
   t.truthy(prices.BTCUSDT)
 })

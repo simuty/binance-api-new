@@ -618,9 +618,13 @@ declare module 'binance-api-new' {
       limit?: number
     }): Promise<FuturesUserTradeResult[]>
     futuresDailyStats(options?: { symbol: string }): Promise<DailyStatsResult | DailyStatsResult[]>
-    futuresPrices(): Promise<{ [index: string]: string }>
+    futuresPrices(options?: {
+      symbol?: string
+    }): Promise<{ [index: string]: string }>
     futuresAllBookTickers(): Promise<{ [key: string]: Ticker }>
-    futuresMarkPrice(): Promise<MarkPriceResult[]>
+    futuresMarkPrice(options?: {
+        symbol?: string
+    }): Promise<MarkPriceResult[] | MarkPriceResult>
     futuresAllForceOrders(options?: {
       symbol?: string
       startTime?: number
@@ -1958,13 +1962,17 @@ declare module 'binance-api-new' {
     quoteAssetVolume: string
   }
 
-  export interface MarkPriceResult {
-    symbol: string
-    markPrice: string
-    lastFundingRate: string
-    nextFundingTime: number
-    time: number
+  export interface MarkPriceResult  {
+    symbol: string;
+    markPrice: string;
+    indexPrice: string;
+    estimatedSettlePrice: string;
+    lastFundingRate: string;
+    nextFundingTime: number;
+    interestRate: string;
+    time: number;
   }
+
 
   export interface AllForceOrdersResult {
     symbol: string
