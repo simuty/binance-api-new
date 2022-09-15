@@ -436,8 +436,8 @@ export default opts => {
       pubCall('/fapi/v1/ticker/price', payload).then(r =>
         (Array.isArray(r) ? r : [r]).reduce((out, cur) => ((out[cur.symbol] = cur.price), out), {}),
       ),
-    futuresAllBookTickers: () =>
-      pubCall('/fapi/v1/ticker/bookTicker').then(r =>
+    futuresAllBookTickers: (payload) =>
+      pubCall('/fapi/v1/ticker/bookTicker', payload).then(r =>
         (Array.isArray(r) ? r : [r]).reduce((out, cur) => ((out[cur.symbol] = cur), out), {}),
       ),
     futuresFundingRate: payload =>
