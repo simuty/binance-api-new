@@ -21,8 +21,8 @@ const info = {
 const makeQueryString = q =>
   q
     ? `?${Object.keys(q)
-        .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(q[k])}`)
-        .join('&')}`
+      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(q[k])}`)
+      .join('&')}`
     : ''
 
 /**
@@ -63,7 +63,8 @@ const sendResult = call =>
 
     // If response is ok, we can safely assume it is valid JSON
     if (res.ok) {
-      return res.text().then(text => JSONbig.parse(text))
+      return response.json()
+      // return res.text().then(text => JSONbig.parse(text))
     }
 
     // Errors might come from the API itself or the proxy Binance is using.
@@ -114,13 +115,12 @@ const checkParams = (name, payload, requires = []) => {
  * @returns {object} The api response
  */
 const publicCall = ({ proxy, endpoints }) => (path, data, method = 'GET', headers = {}) => {
+  const url = `${!(path.includes('/fapi') || path.includes('/futures')) || path.includes('/sapi')
+    ? endpoints.base
+    : endpoints.futures
+    }${path}${makeQueryString(data)}`
   return sendResult(
-    fetch(
-      `${
-        !(path.includes('/fapi') || path.includes('/futures')) || path.includes('/sapi')
-          ? endpoints.base
-          : endpoints.futures
-      }${path}${makeQueryString(data)}`,
+    fetch(url,
       {
         method,
         json: true,
@@ -129,6 +129,16 @@ const publicCall = ({ proxy, endpoints }) => (path, data, method = 'GET', header
       },
     ),
   )
+  // return sendResult(
+  //   fetch(url,
+  //     {
+  //       method,
+  //       json: true,
+  //       headers,
+  //       ...(proxy ? { agent: new HttpsProxyAgent(proxy) } : {}),
+  //     },
+  //   ),
+  // )
 }
 
 /**
@@ -184,14 +194,12 @@ const privateCall = ({
       .digest('hex')
 
     const newData = noExtra ? data : { ...data, timestamp, signature }
-
+    const url = `${!(path.includes('/fapi') || path.includes('/futures')) || path.includes('/sapi')
+      ? endpoints.base
+      : endpoints.futures
+      }${path}${noData ? '' : makeQueryString(newData)}`
     return sendResult(
-      fetch(
-        `${
-          !(path.includes('/fapi') || path.includes('/futures')) || path.includes('/sapi')
-            ? endpoints.base
-            : endpoints.futures
-        }${path}${noData ? '' : makeQueryString(newData)}`,
+      fetch(url,
         {
           method,
           headers: { 'X-MBX-APIKEY': apiKey },
@@ -438,7 +446,8 @@ export default opts => {
       ),
     futuresAllBookTickers: (payload) =>
       pubCall('/fapi/v1/ticker/bookTicker', payload).then(r =>
-        (Array.isArray(r) ? r : [r]).reduce((out, cur) => ((out[cur.symbol] = cur), out), {}),
+        // (Array.isArray(r) ? r : [r]).reduce((out, cur) => ((out[cur.symbol] = cur), out), {}),
+        (Array.isArray(r) ? r : [r]),
       ),
     futuresFundingRate: payload =>
       checkParams('fundingRate', payload, ['symbol']) && pubCall('/fapi/v1/fundingRate', payload),

@@ -762,34 +762,34 @@ test('[FUTURES-REST] dailyStats', async t => {
   checkFields(t, res, ['highPrice', 'lowPrice', 'volume', 'priceChange'])
 })
 
-test.only('[FUTURES-REST] prices', async t => {
+test('[FUTURES-REST] prices', async t => {
   const prices = await client.futuresPrices({ symbol: 'BTCUSDT' })
   t.truthy(prices)
   t.truthy(prices.BTCUSDT)
 })
 
-test('[FUTURES-REST] allBookTickers', async t => {
-    const tickers = await client.futuresAllBookTickers()
-    t.truthy(tickers)
-    t.truthy(tickers.BTCUSDT)
+test.only('[FUTURES-REST] allBookTickers', async t => {
+  const tickers = await client.futuresAllBookTickers()
+  t.truthy(tickers)
+  t.truthy(tickers.BTCUSDT)
 })
 
 test('[FUTURES-REST] aggTrades', async t => {
-    try {
-        await client.futuresAggTrades({})
-    } catch (e) {
-        t.is(e.message, 'Method aggTrades requires symbol parameter.')
-    }
+  try {
+    await client.futuresAggTrades({})
+  } catch (e) {
+    t.is(e.message, 'Method aggTrades requires symbol parameter.')
+  }
 
-    const trades = await client.futuresAggTrades({symbol: 'BTCUSDT'})
-    t.truthy(trades.length)
+  const trades = await client.futuresAggTrades({ symbol: 'BTCUSDT' })
+  t.truthy(trades.length)
 
-    const [trade] = trades
-    t.truthy(trade.aggId)
+  const [trade] = trades
+  t.truthy(trade.aggId)
 })
 
 test('[FUTURES-REST] fundingRate', async t => {
-    const fundingRate = await client.futuresFundingRate({symbol: 'BTCUSDT'})
-    checkFields(t, fundingRate[0], ['symbol', 'fundingTime', 'fundingRate'])
-    t.is(fundingRate.length, 100)
+  const fundingRate = await client.futuresFundingRate({ symbol: 'BTCUSDT' })
+  checkFields(t, fundingRate[0], ['symbol', 'fundingTime', 'fundingRate'])
+  t.is(fundingRate.length, 100)
 })

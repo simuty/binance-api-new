@@ -18,19 +18,37 @@ you don't plan on doing authenticated calls. You can create an api key
 [here](https://www.binance.com/userCenter/createApi.html).
 
 ```js
-// import Binance from 'binance-api-node'
 import Binance from 'binance-api-new'
+const APIKey = ""
+const APISecret = ""
+const base_url = "https://fapi.apollox.finance"
 
-const client = Binance()
-
-// Authenticated client, can make signed calls
-const client2 = Binance({
-  apiKey: 'xxx',
-  apiSecret: 'xxx',
-  getTime: xxx,
+// js
+const client = Binance.default({
+  apiKey: APIKey,
+  apiSecret: APISecret,
+  // httpBase: base_url
 })
 
-client.time().then(time => console.log(time))
+
+// ts
+// const client = Binance.default({
+//   apiKey: APIKey,
+//   apiSecret: APISecret,
+//   // httpBase: base_url
+// })
+
+
+async function test () {
+  // client.ws.aggTrades(['BNBUSDT'], trade => {
+  // console.log(trade)
+  // console.log("================");
+  // })
+  const list = await client.futuresAllBookTickers()
+  console.log(list);
+}
+
+test()
 ```
 
 If you do not have an appropriate babel config, you will need to use the basic commonjs requires.
