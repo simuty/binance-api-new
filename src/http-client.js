@@ -63,17 +63,18 @@ const sendResult = call =>
 
     // If response is ok, we can safely assume it is valid JSON
     if (res.ok) {
-      return response.json()
+      // return response.json()
+      return res.json()
       // return res.text().then(text => JSONbig.parse(text))
     }
 
     // Errors might come from the API itself or the proxy Binance is using.
     // For API errors the response will be valid JSON,but for proxy errors
     // it will be HTML
-    return res.text().then(text => {
+    return res.json().then(json => {
       let error
       try {
-        const json = JSONbig.parse(text)
+        // const json = JSONbig.parse(text)
         // The body was JSON parseable, assume it is an API response error
         error = new Error(json.msg || `${res.status} ${res.statusText}`)
         error.code = json.code

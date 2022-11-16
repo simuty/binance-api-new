@@ -770,8 +770,9 @@ test('[FUTURES-REST] prices', async t => {
 
 test.only('[FUTURES-REST] allBookTickers', async t => {
   const tickers = await client.futuresAllBookTickers()
-  t.truthy(tickers)
-  t.truthy(tickers.BTCUSDT)
+  t.truthy(tickers.length)
+  const tickers1 = await client.futuresAllBookTickers({ symbol: "BTCUSDT" })
+  t.truthy(tickers1[0].symbol)
 })
 
 test('[FUTURES-REST] aggTrades', async t => {
