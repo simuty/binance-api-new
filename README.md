@@ -51,6 +51,32 @@ async function test () {
 test()
 ```
 
+
+```typescript
+// fun.ts 单例
+import Binance, { BinanceType } from 'binance-api-new'
+
+class Bn {
+  private constructor() { }
+  private static instance: BinanceType;
+  public static getClient(): BinanceType {
+    if (this.instance == null) {
+      this.instance = Binance({
+        apiKey: BINANCE_INFO.APIKey,
+        apiSecret: BINANCE_INFO.APISecret,
+      })
+    }
+    return this.instance;
+  }
+}
+
+// index.ts
+const client = Bn.getClient()
+const list = await client.futuresAllBookTickers()
+console.log(list);
+```
+
+
 If you do not have an appropriate babel config, you will need to use the basic commonjs requires.
 
 ```js

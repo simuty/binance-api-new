@@ -9,7 +9,7 @@ declare module 'binance-api-new' {
     wsBase?: string
     wsFutures?: string
     proxy?: string
-  }): Binance
+  }): BinanceType
 
   export type ErrorCodes_LT =
     | -1000
@@ -475,7 +475,7 @@ declare module 'binance-api-new' {
 
 
 
-  export interface Binance {
+  export interface BinanceType {
     getInfo(): GetInfo
     accountInfo(options?: { useServerTime: boolean }): Promise<Account>
     tradeFee(options?: { useServerTime: boolean }): Promise<TradeFee[]>
